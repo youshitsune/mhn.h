@@ -24,8 +24,6 @@ Net net_init(int p, int n, float beta, float *X, float *eps) {
 }
 
 void net_softmax(float *arr, int p) {
-    const float e = 2.71828;
-
     float mx = arr[0];
     for (int i = 1; i < p; i++) {
         if (mx < arr[i]) mx = arr[i];
@@ -33,7 +31,7 @@ void net_softmax(float *arr, int p) {
 
     float sum = 0;
     for (int i = 0; i < p; i++) {
-        arr[i] = pow(e, arr[i]-mx);
+        arr[i] = exp(arr[i]-mx);
         sum += arr[i];
     }
 
