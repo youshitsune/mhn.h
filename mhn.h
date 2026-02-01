@@ -10,14 +10,23 @@ typedef struct{
     float *eps;
 } Net;
 
+Net net_init(int p, int n, float beta, float *X);
+void net_update_rule(Net net);
+void net_converge(Net net, float* eps);
 
-Net net_init(int p, int n, float beta, float *X, float *eps) {
+// Helper functions
+void net_softmax(float *arr, int p);
+void net_scalarmul(float *arr, int n, float v);
+static inline void net_copy(float *arr1, float *arr2, int n);
+static inline int net_equals(float *arr1, float *arr2, int n);
+
+
+Net net_init(int p, int n, float beta, float *X) {
     Net net = {
         .p = p,
         .n = n,
         .beta = beta,
         .X = X,
-        .eps = eps,
     };
     
     return net;
@@ -82,7 +91,8 @@ static inline void net_copy(float *arr1, float *arr2, int n) {
     }
 }
 
-void net_converge(Net net) {
+void net_converge(Net net, float* eps) {
+    net.eps = eps;
     float pre[net.n];
     for (int i = 0; i < net.n; i++) pre[i] = 0;
     
